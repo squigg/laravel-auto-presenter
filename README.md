@@ -4,7 +4,7 @@
 
 This package automatically decorates objects bound to views during the view render process.
 
-## Quick-install
+## Quick-Install
 
 **For Laravel 4.1**
 
@@ -34,7 +34,7 @@ This package automatically decorates objects bound to views during the view rend
 <a name="install-laravel-package-installer"/>
 ## Installing With The Laravel 4 Package Installer
 
-1. Install [Laravel 4 Package Installer](https://github.com/rtablada/package-installer)
+1. Install the [Laravel 4 Package Installer](https://github.com/rtablada/package-installer)
 2. Run `php artisan package:install mccool/laravel-auto-presenter`
 
 <a name="install-composer"/>
