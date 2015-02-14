@@ -80,6 +80,18 @@ class PresenterDecoratorTest extends AbstractTestCase
         }
     }
 
+    public function testDecorateArray()
+    {
+        $array = $this->getFilledArray();
+        $decoratedArray = $this->decorator->decorate($array);
+
+        $this->assertCount(5, $decoratedArray);
+
+        foreach ($decoratedArray as $decoratedAtom) {
+            $this->assertInstanceOf(DecoratedAtomPresenter::class, $decoratedAtom);
+        }
+    }
+
     /**
      * @expectedException \McCool\LaravelAutoPresenter\Exceptions\PresenterNotFound
      */
@@ -126,5 +138,16 @@ class PresenterDecoratorTest extends AbstractTestCase
         }
 
         return new Collection($items);
+    }
+
+    private function getFilledArray()
+    {
+        $items = [];
+
+        foreach (range(1, 5) as $i) {
+            $items[] = $this->getDecoratedAtom();
+        }
+
+        return $items;
     }
 }

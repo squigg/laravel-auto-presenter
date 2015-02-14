@@ -33,6 +33,11 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertIsInjectable('McCool\LaravelAutoPresenter\Decorators\PaginatorDecorator');
     }
 
+    public function testArrayDecoratorIsInjectable()
+    {
+        $this->assertIsInjectable('McCool\LaravelAutoPresenter\Decorators\ArrayDecorator');
+    }
+
     public function testPresenterDecoratorIsInjectable()
     {
         $this->assertIsInjectable('McCool\LaravelAutoPresenter\PresenterDecorator');

@@ -14,6 +14,7 @@ namespace McCool\LaravelAutoPresenter\Decorators;
 
 use Illuminate\Contracts\Container\Container;
 use McCool\LaravelAutoPresenter\Exceptions\DecoratorNotFound;
+use McCool\LaravelAutoPresenter\PresenterDecorator;
 
 abstract class BaseDecorator
 {
@@ -56,6 +57,17 @@ abstract class BaseDecorator
         }
 
         return $this->container->make($decoratorClass);
+    }
+
+    /**
+     * Get the PresenterDecorator to make use of the canDecorate
+     * tests for nested decorating
+     *
+     * @return PresenterDecorator
+     */
+    public function getPresenterDecorator()
+    {
+        return $this->container->make('autopresenter');
     }
 
     /**

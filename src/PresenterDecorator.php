@@ -12,10 +12,6 @@
 
 namespace McCool\LaravelAutoPresenter;
 
-use McCool\LaravelAutoPresenter\Decorators\AtomDecorator;
-use McCool\LaravelAutoPresenter\Decorators\CollectionDecorator;
-use McCool\LaravelAutoPresenter\Decorators\PaginatorDecorator;
-
 class PresenterDecorator
 {
     /**
@@ -26,21 +22,14 @@ class PresenterDecorator
     protected $decorators = [];
 
     /**
-     * Create a new presenter decorator.
+     * Add a decorator to the list of usable decorators
      *
-     * This is the class that decorates models, paginators and collections.
-     *
-     * @param \McCool\LaravelAutoPresenter\Decorators\AtomDecorator       $atom
-     * @param \McCool\LaravelAutoPresenter\Decorators\CollectionDecorator $collection
-     * @param \McCool\LaravelAutoPresenter\Decorators\PaginatorDecorator  $pagination
-     *
-     * @return void
+     * @param $key
+     * @param $decorator
      */
-    public function __construct(AtomDecorator $atom, CollectionDecorator $collection, PaginatorDecorator $pagination)
+    public function addDecorator($key, $decorator)
     {
-        $this->decorators['atom'] = $atom;
-        $this->decorators['collection'] = $collection;
-        $this->decorators['pagination'] = $pagination;
+        $this->decorators[$key] = $decorator;
     }
 
     /**
