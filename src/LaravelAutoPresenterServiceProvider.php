@@ -19,6 +19,7 @@ use McCool\LaravelAutoPresenter\Decorators\ArrayDecorator;
 use McCool\LaravelAutoPresenter\Decorators\AtomDecorator;
 use McCool\LaravelAutoPresenter\Decorators\CollectionDecorator;
 use McCool\LaravelAutoPresenter\Decorators\PaginatorDecorator;
+use McCool\LaravelAutoPresenter\Decorators\EnrichedActivityDecorator;
 
 class LaravelAutoPresenterServiceProvider extends ServiceProvider
 {
@@ -63,14 +64,21 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
      */
     protected function setupEventListening(Application $app)
     {
-        $app['events']->listen('content.rendering', function (View $view) use ($app) {
+        $defaultKeys = ['__env','app'];
+
+        $app['events']->listen('content.rendering', function (View $view) use ($app, $defaultKeys) {
+
             if ($viewData = array_merge($view->getFactory()->getShared(), $view->getData())) {
                 $decorator = $app['autopresenter'];
 
                 foreach ($viewData as $key => $value) {
+                    if (in_array($key, $defaultKeys)) {
+                        continue;
+                    }
                     $view[$key] = $decorator->decorate($value);
                 }
             }
+
         });
     }
 
@@ -84,8 +92,9 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
         $this->registerAtomDecorator($this->app);
         $this->registerCollectionDecorator($this->app);
         $this->registerPaginatorDecorator($this->app);
-        $this->registerArrayDecorator($this->app);
         $this->registerPresenterDecorator($this->app);
+        $this->registerArrayDecorator($this->app);
+        $this->registerEnrichedActivityDecorator($this->app);
     }
 
     /**
@@ -137,6 +146,22 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the collection decorator.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     *
+     * @return void
+     */
+    public function registerEnrichedActivityDecorator(Application $app)
+    {
+        $app->singleton('autopresenter.enrichedactivity', function (Application $app) {
+            return new EnrichedActivityDecorator($app);
+        });
+
+        $app->alias('autopresenter.enrichedactivity', 'McCool\LaravelAutoPresenter\Decorators\EnrichedActivityDecorator');
+    }
+
+    /**
      * Register the paginator decorator.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
@@ -167,12 +192,14 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
             $collection = $app['autopresenter.collection'];
             $paginator = $app['autopresenter.paginator'];
             $array = $app['autopresenter.array'];
+            $enrichedActivity = $app['autopresenter.enrichedactivity'];
 
             $presenter = new PresenterDecorator();
             $presenter->addDecorator('atom', $atom);
             $presenter->addDecorator('collection', $collection);
             $presenter->addDecorator('paginator', $paginator);
             $presenter->addDecorator('array', $array);
+            $presenter->addDecorator('enrichedactivity', $enrichedActivity);
 
             return $presenter;
         });
@@ -193,6 +220,7 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
             'autopresenter.collection',
             'autopresenter.paginator',
             'autopresenter.array',
+            'autopresenter.enrichedactivity',
         ];
     }
 }
