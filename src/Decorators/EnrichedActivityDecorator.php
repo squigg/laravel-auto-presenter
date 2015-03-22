@@ -53,7 +53,7 @@ class EnrichedActivityDecorator extends BaseDecorator implements DecoratorInterf
             }
         }
 
-        return $this->getPresenterDecorator()->decorate($subject);
+        return $subject;
     }
 
 }
