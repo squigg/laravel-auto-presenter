@@ -13,6 +13,7 @@
 namespace McCool\LaravelAutoPresenter\Decorators;
 
 use GetStream\StreamLaravel\EnrichedActivity;
+use McCool\LaravelAutoPresenter\Exceptions\PresenterNotFound;
 
 class EnrichedActivityDecorator extends BaseDecorator implements DecoratorInterface
 {
@@ -43,15 +44,16 @@ class EnrichedActivityDecorator extends BaseDecorator implements DecoratorInterf
             return $subject;
         }
 
-        // Decorate the 'actor'
-        $toDecorate = ['actor','object'];
+        // Decorate the actor, object and target
+        $toDecorate = ['actor','object','target'];
 
         foreach ($toDecorate as $field) {
-
-            $subject[$field] = $this->getPresenterDecorator()->decorate($subject[$field]);
+            if (array_key_exists($field, $subject)) {
+                $subject[$field] = $this->getPresenterDecorator()->decorate($subject[$field]);
+            }
         }
 
-        return $subject;
+        return $this->getPresenterDecorator()->decorate($subject);
     }
 
 }
