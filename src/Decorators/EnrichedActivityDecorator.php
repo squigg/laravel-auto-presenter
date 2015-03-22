@@ -48,7 +48,7 @@ class EnrichedActivityDecorator extends BaseDecorator implements DecoratorInterf
         $toDecorate = ['actor','object','target'];
 
         foreach ($toDecorate as $field) {
-            if (array_key_exists($field, $subject)) {
+            if (isset($subject[$field])) {
                 $subject[$field] = $this->getPresenterDecorator()->decorate($subject[$field]);
             }
         }
