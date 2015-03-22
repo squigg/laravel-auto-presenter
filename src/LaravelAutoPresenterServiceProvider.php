@@ -195,11 +195,11 @@ class LaravelAutoPresenterServiceProvider extends ServiceProvider
             $enrichedActivity = $app['autopresenter.enrichedactivity'];
 
             $presenter = new PresenterDecorator();
-            $presenter->addDecorator('atom', $atom);
-            $presenter->addDecorator('collection', $collection);
-            $presenter->addDecorator('paginator', $paginator);
-            $presenter->addDecorator('array', $array);
             $presenter->addDecorator('enrichedactivity', $enrichedActivity);
+            $presenter->addDecorator('paginator', $paginator);
+            $presenter->addDecorator('collection', $collection);
+            $presenter->addDecorator('array', $array);
+            $presenter->addDecorator('atom', $atom);
 
             return $presenter;
         });
